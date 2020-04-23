@@ -1,1 +1,16 @@
 .vs/
+
+
+
+OpencvMe.Common/bin/
+OpencvMe.Common/obj/
+OpencvMe.DTO/bin/
+OpencvMe.DTO/obj/
+OpencvMe.Model/bin/
+OpencvMe.Model/obj/
+OpencvMe.Repository/bin/
+OpencvMe.Repository/obj/
+OpencvMe.Service/bin/
+OpencvMe.Service/obj/
+OpencvMe.WebApi/bin/
+OpencvMe.WebApi/obj/

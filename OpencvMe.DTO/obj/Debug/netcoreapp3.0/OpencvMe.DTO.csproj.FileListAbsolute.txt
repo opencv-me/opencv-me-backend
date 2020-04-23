@@ -1,8 +1,0 @@
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\bin\Debug\netcoreapp3.0\OpencvMe.DTO.deps.json
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\bin\Debug\netcoreapp3.0\OpencvMe.DTO.dll
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\bin\Debug\netcoreapp3.0\OpencvMe.DTO.pdb
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\obj\Debug\netcoreapp3.0\OpencvMe.DTO.csproj.CoreCompileInputs.cache
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\obj\Debug\netcoreapp3.0\OpencvMe.DTO.AssemblyInfoInputs.cache
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\obj\Debug\netcoreapp3.0\OpencvMe.DTO.AssemblyInfo.cs
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\obj\Debug\netcoreapp3.0\OpencvMe.DTO.dll
-C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.DTO\obj\Debug\netcoreapp3.0\OpencvMe.DTO.pdb
