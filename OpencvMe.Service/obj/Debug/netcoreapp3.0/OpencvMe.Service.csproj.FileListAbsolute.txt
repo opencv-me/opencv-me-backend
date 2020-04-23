@@ -1,0 +1,16 @@
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.Service.deps.json
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.Service.dll
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.Service.pdb
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.Model.dll
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.Repository.dll
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.Repository.pdb
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.Model.pdb
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\obj\Debug\netcoreapp3.0\OpencvMe.Service.csprojAssemblyReference.cache
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\obj\Debug\netcoreapp3.0\OpencvMe.Service.csproj.CoreCompileInputs.cache
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\obj\Debug\netcoreapp3.0\OpencvMe.Service.AssemblyInfoInputs.cache
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\obj\Debug\netcoreapp3.0\OpencvMe.Service.AssemblyInfo.cs
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\obj\Debug\netcoreapp3.0\OpencvMe.Service.csproj.CopyComplete
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\obj\Debug\netcoreapp3.0\OpencvMe.Service.dll
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\obj\Debug\netcoreapp3.0\OpencvMe.Service.pdb
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.DTO.dll
+C:\Users\zenbil61\source\repos\opencv-me-service\OpencvMe.Service\bin\Debug\netcoreapp3.0\OpencvMe.DTO.pdb

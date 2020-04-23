@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpencvMe.Model", "OpencvMe.Model\OpencvMe.Model.csproj", "{1CE13A31-6AD4-4DC9-A98F-AE0CF40150B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpencvMe.Common", "OpencvMe.Common\OpencvMe.Common.csproj", "{D8DA422F-1002-4042-BA1E-A16FEFC5B539}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpencvMe.WebApi", "OpencvMe.WebApi\OpencvMe.WebApi.csproj", "{E01FC8B5-07BA-4D58-82BD-3630B8850E8E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpencvMe.DTO", "OpencvMe.DTO\OpencvMe.DTO.csproj", "{7B4728AC-3AD5-4923-B84A-EB312FA2F854}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpencvMe.Repository", "OpencvMe.Repository\OpencvMe.Repository.csproj", "{7CD9D42F-E48F-49F0-945D-3008B31DEAF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpencvMe.Service", "OpencvMe.Service\OpencvMe.Service.csproj", "{E5EB4C3C-36FF-4538-A4E6-B0EAB10B2BD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CE13A31-6AD4-4DC9-A98F-AE0CF40150B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE13A31-6AD4-4DC9-A98F-AE0CF40150B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE13A31-6AD4-4DC9-A98F-AE0CF40150B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE13A31-6AD4-4DC9-A98F-AE0CF40150B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8DA422F-1002-4042-BA1E-A16FEFC5B539}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8DA422F-1002-4042-BA1E-A16FEFC5B539}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8DA422F-1002-4042-BA1E-A16FEFC5B539}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8DA422F-1002-4042-BA1E-A16FEFC5B539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E01FC8B5-07BA-4D58-82BD-3630B8850E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E01FC8B5-07BA-4D58-82BD-3630B8850E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E01FC8B5-07BA-4D58-82BD-3630B8850E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E01FC8B5-07BA-4D58-82BD-3630B8850E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B4728AC-3AD5-4923-B84A-EB312FA2F854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B4728AC-3AD5-4923-B84A-EB312FA2F854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B4728AC-3AD5-4923-B84A-EB312FA2F854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B4728AC-3AD5-4923-B84A-EB312FA2F854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CD9D42F-E48F-49F0-945D-3008B31DEAF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CD9D42F-E48F-49F0-945D-3008B31DEAF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CD9D42F-E48F-49F0-945D-3008B31DEAF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CD9D42F-E48F-49F0-945D-3008B31DEAF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5EB4C3C-36FF-4538-A4E6-B0EAB10B2BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5EB4C3C-36FF-4538-A4E6-B0EAB10B2BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5EB4C3C-36FF-4538-A4E6-B0EAB10B2BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5EB4C3C-36FF-4538-A4E6-B0EAB10B2BD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E193D002-9972-4BD2-B9D9-C2EDE1B5D21F}
+	EndGlobalSection
+EndGlobal
