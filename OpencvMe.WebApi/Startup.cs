@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using OpencvMe.Common.Constant;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 namespace OpencvMe.WebApi
 {
@@ -42,6 +43,37 @@ namespace OpencvMe.WebApi
 
             // Automapper Inject
             services.AddAutoMapper(typeof(MappingProfile));
+
+
+            #region Swagger
+            // Swashbuckle => swagger için kurulanlar
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo() { Title = "Opencv API", Version = "v1" });
+
+                x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT"
+                });
+                x.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new List<string>()
+                    }
+                });
+
+            });
+
+            #endregion
 
             #region Dependency Injections
             services.AddTransient<IUserCompanyRepository, UserCompanyRepository>();
@@ -91,6 +123,14 @@ namespace OpencvMe.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "OpenCV API  Version 1");
+
+            });
 
             app.UseRouting();
 

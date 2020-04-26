@@ -10,7 +10,7 @@ namespace OpencvMe.WebApi.Base
 {
     public class OpenCvBaseController : ControllerBase
     {
-
+        [NonAction]
         public string GetBearerToken ()
         {
             var token = HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authorization").Value;
@@ -20,6 +20,7 @@ namespace OpencvMe.WebApi.Base
             }
             return token.ToString();
         }
+        [NonAction]
         public UserClaimModel GetUserClaims()
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == "id").Value;
