@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\OpencvMe.DTO\OpencvMe.DTO.csproj" />
     <ProjectReference Include="..\OpencvMe.Repository\OpencvMe.Repository.csproj" />
+    <ProjectReference Include="..\OpencvMe.Common\OpencvMe.Common.csproj" />
   </ItemGroup>
 
 </Project>

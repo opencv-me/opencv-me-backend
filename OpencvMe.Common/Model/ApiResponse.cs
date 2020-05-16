@@ -23,9 +23,8 @@ namespace OpencvMe.Common.Model
 
         public ApiResponse<T> Error(string message = "İşlem Hatalı")
         {
-            this.IsSuccess = true;
+            this.IsSuccess = false;
             this.Message = message;
-
             return this;
         }
     }

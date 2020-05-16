@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpencvMe.DTO.SchoolDTO
+namespace OpencvMe.DTO.CompanyDTO
 {
-    public class UserSchoolCreateDTO
+    public class UserCompanyUpdateDTO
     {
+        public int UserCompanyId { get; set; }
         public int UserId { get; set; }
-        public int SchoolId { get; set; }
-        public string Section { get; set; } //okuduğu bölüm
+        public int CompanyId { get; set; }
+        public string Position { get; set; }
+
+        public bool IsWorking { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool IsContinue { get; set; }
-        public int licenseDegree { get; set; }
+
         public string Description { get; set; }
     }
 }

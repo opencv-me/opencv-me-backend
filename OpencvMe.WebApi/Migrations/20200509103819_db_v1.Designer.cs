@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OpencvMe.Model.Context;
 
-namespace OpencvMe.Model.Migrations
+namespace OpencvMe.WebApi.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20191229132428_updatev3")]
-    partial class updatev3
+    [Migration("20200509103819_db_v1")]
+    partial class db_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -217,6 +217,9 @@ namespace OpencvMe.Model.Migrations
                     b.Property<bool>("IsWorking")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Position")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -244,9 +247,6 @@ namespace OpencvMe.Model.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DiplomaPoint")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -262,10 +262,16 @@ namespace OpencvMe.Model.Migrations
                     b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Section")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("licenseDegree")
                         .HasColumnType("int");
 
                     b.HasKey("UserSchoolId");

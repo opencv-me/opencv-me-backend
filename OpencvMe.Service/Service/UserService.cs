@@ -8,6 +8,7 @@ using OpencvMe.Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using OpencvMe.Common.Constant;
 
 namespace OpencvMe.Service.Service
 {
@@ -17,27 +18,54 @@ namespace OpencvMe.Service.Service
         IUserRepository _userRepository;
         ICvRepository _cvRepository;
         IMapper _mapper;
+        ISchoolService _schoolService;
+        ICompanyService _companyService;
 
         public UserService(IUserRepository userRepository,
             ICvRepository cvRepository,
-            IMapper mapper)
+            IMapper mapper,
+            ISchoolService schoolService,
+            ICompanyService companyService)
         {
             _userRepository = userRepository;
             _cvRepository = cvRepository;
             _mapper = mapper;
+            _schoolService = schoolService;
+            _companyService = companyService;
         }
 
 
         public int RegisterUser(UserCreateDTO userRequest)
         {
             var user = _mapper.Map<User>(userRequest);
-            _userRepository.Create(user);
-            return user.UserId;
+            var checkUser = _userRepository.Get(x => x.Email == user.Email);
+
+            if(checkUser == null)
+            {
+                _userRepository.Create(user);
+                return user.UserId;
+            }
+            else
+            {
+                return ErrorConstant.HasMail;
+            }
+
         }
         public UserResponseDTO GetUserInformation(int id)
         {
             var user = _userRepository.Get(x => x.UserId == id);
+            var cv = _cvRepository.Get(x => x.UserId == id);
+
+
             var userResponse = _mapper.Map<UserResponseDTO>(user);
+            userResponse.Cv = _mapper.Map<CvResponseDTO>(cv);
+            if(userResponse.Cv != null)
+            {
+                userResponse.Cv.Schools = _schoolService.GetUserSchools(id); ;
+                userResponse.Cv.Companies = _companyService.GetUserCompanies(id);
+            }
+            userResponse.IsCvCreated = cv != null;
+
             return userResponse;
         }
         public CvResponseDTO GetUserCv (string url)
@@ -51,10 +79,12 @@ namespace OpencvMe.Service.Service
 
            return response;
         }
-        public int CreateCv (CvCreateDTO cvRequest)
+        public int CreateCv (CvCreateDTO cvRequest,int userId)
         {
             var cv = _mapper.Map<Cv>(cvRequest);
             _cvRepository.Create(cv);
+            var isAddSchools =  _schoolService.AddUserSchoolList(cvRequest.UserSchools, userId);
+            var isAddCompanies = _companyService.AddUserCompanyList(cvRequest.UserCompanies, userId);
             return cv.CvId;
         }
         public bool UpdateCv (CvUpdateDTO cvRequest)
@@ -86,7 +116,7 @@ namespace OpencvMe.Service.Service
 
             
         }
-
+         
         public bool CheckCvUrl(string url)
         {
             var cv = _cvRepository.Get(x => x.CvUrl == url);

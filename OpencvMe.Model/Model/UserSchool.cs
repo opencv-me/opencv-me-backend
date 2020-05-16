@@ -27,15 +27,19 @@ namespace OpencvMe.Model.Model
         /// Okulu devam ediyor mu
         /// </summary>
         public bool IsContinue { get; set; }
-
         /// <summary>
-        /// Diploma Puanı
+        /// Okuduğu Bölüm
         /// </summary>
-        public string DiplomaPoint { get; set; }
+        public string Section { get; set; } 
 
         /// <summary>
         /// Okul Hakkında açıklama
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// lisans derecesi
+        /// </summary>
+        public int licenseDegree { get; set; }
     }
 }

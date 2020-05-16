@@ -27,8 +27,8 @@ namespace OpencvMe.DTO.CvDTO
         public string Instagram { get; set; }
         public string Medium { get; set; }
 
-       // public List<UserSchoolCreateDTO> UserSchools { get; set; }
-        //public List<UserCompanyCreateDTO> UserCompanies { get; set; }
+        public List<UserSchoolCreateDTO> UserSchools { get; set; }
+        public List<UserCompanyCreateDTO> UserCompanies { get; set; }
 
         public bool IsPublic { get; set; }
     }

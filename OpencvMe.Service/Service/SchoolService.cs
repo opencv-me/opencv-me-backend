@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
+using OpencvMe.Common.Helper;
 using OpencvMe.DTO.SchoolDTO;
 using OpencvMe.Model.Model;
 using OpencvMe.Repository.Interface;
 using OpencvMe.Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
 namespace OpencvMe.Service.Service
 {
     public class SchoolService : ISchoolService
+
     {
         public ISchoolRepository _schoolRepository;
         public IUserSchoolRepository _userSchoolRepository;
@@ -35,17 +38,19 @@ namespace OpencvMe.Service.Service
                 where s.SchoolId == us.SchoolId
                 select new UserSchoolResponseDTO()
                 {
+                    UserSchoolId = us.UserSchoolId,
                     SchoolName = s.Name,
                     SchoolId = s.SchoolId,
                     Description  =us.Description,
-                    DiplomaPoint = us.DiplomaPoint,
-                    EndDate = us.EndDate,
+                    Section = us.Section,
                     IsContinue = us.IsContinue,
-                    StartDate = us.StartDate
-
+                    StartDate = us.StartDate,
+                    EndDate = us.EndDate,
+                    StartDateStr = us.StartDate.CustomDateStr(),
+                    EndDateStr = us.EndDate?.CustomDateStr(),
+                   
                 }
             ).ToList();
-
             return response;
         }
 
@@ -61,6 +66,35 @@ namespace OpencvMe.Service.Service
             var school = _mapper.Map<School>(schoolRequest);
             _schoolRepository.Create(school);
             return school.SchoolId;
+        }
+
+        public bool AddUserSchoolList(List<UserSchoolCreateDTO> request,int userId)
+        {
+            var userSchools = _mapper.Map<List<UserSchool>>(request);
+            userSchools.ForEach(item => item.UserId = userId);
+            var response = _userSchoolRepository.CreateRange(userSchools);
+            return response;
+        }
+
+        public int AddUserSchool(UserSchoolCreateDTO request,int userId)
+        {
+            var userSchool = _mapper.Map<UserSchool>(request);
+            userSchool.UserId = userId;
+            var response = _userSchoolRepository.Create(userSchool);
+            return response.UserSchoolId;
+        }
+
+        public bool DeleteUserSchool(int userSchoolId)
+        {
+           return _userSchoolRepository.Delete(userSchoolId);
+        }
+
+        public bool UpdateUserSchool(UserSchoolUpdateDTO request, int userId)
+        {
+            var userSchool = _mapper.Map<UserSchool>(request);
+            userSchool.UserId = userId;
+            _userSchoolRepository.Update(userSchool);
+            return true;
         }
     }
 }

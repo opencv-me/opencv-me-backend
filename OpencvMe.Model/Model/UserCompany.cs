@@ -28,6 +28,10 @@ namespace OpencvMe.Model.Model
         public DateTime EndDate { get; set; }
 
         /// <summary>
+        /// Çalıtığı Pozisypn
+        /// </summary>
+        public string Position { get; set; }
+        /// <summary>
         /// İş Hakında Açıklama
         /// </summary>
         public string Description { get; set; }

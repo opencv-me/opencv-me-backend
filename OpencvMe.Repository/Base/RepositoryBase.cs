@@ -29,11 +29,13 @@ namespace OpencvMe.Repository.Base
         public bool Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
+            _context.SaveChanges();
             return true;
         }
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+           var data = _context.Set<T>().Find(id);
+           return Delete(data);
         }
 
         public T Get(int id)
@@ -62,7 +64,18 @@ namespace OpencvMe.Repository.Base
 
         public T Update(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return entity;
+        }
+
+        public bool CreateRange(List<T> entities)
+        {
+            _context.Set<T>().AddRange(entities);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

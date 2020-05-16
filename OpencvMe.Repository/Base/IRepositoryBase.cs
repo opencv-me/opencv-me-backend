@@ -9,6 +9,7 @@ namespace OpencvMe.Repository.Base
     public interface IRepositoryBase <T>
     {
         T Create(T entity);
+        bool CreateRange(List<T> entity);
         T Update(T entity);
         bool Delete(T entity);
         bool Delete(int id);

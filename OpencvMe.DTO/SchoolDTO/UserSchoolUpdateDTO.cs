@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OpencvMe.DTO.SchoolDTO
 {
-    public class UserSchoolCreateDTO
+    public class UserSchoolUpdateDTO
     {
         public int UserId { get; set; }
         public int SchoolId { get; set; }
@@ -14,5 +14,6 @@ namespace OpencvMe.DTO.SchoolDTO
         public bool IsContinue { get; set; }
         public int licenseDegree { get; set; }
         public string Description { get; set; }
+        public int UserSchoolId { get; set; }
     }
 }

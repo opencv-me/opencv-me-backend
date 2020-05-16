@@ -8,6 +8,7 @@ using System.Text;
 using System.Linq;
 using AutoMapper;
 using OpencvMe.Model.Model;
+using OpencvMe.Common.Helper;
 
 namespace OpencvMe.Service.Service
 {
@@ -35,13 +36,16 @@ namespace OpencvMe.Service.Service
                     where c.CompanyId == uc.CompanyId
                     select new UserCompanyResponseDTO()
                     {
+                        UserCompanyId = uc.UserCompanyId,
                         CompanyName = c.Name,
                         CompanyId = c.CompanyId,
                         Description = uc.Description,
-                        EndDate =uc.EndDate,
                         IsWorking = uc.IsWorking,
+                        Position = uc.Position,
                         StartDate = uc.StartDate,
-                        UserCompanyId =  uc.UserCompanyId
+                        EndDate = uc.EndDate,
+                        StartDateStr = uc.StartDate.CustomDateStr(),
+                        EndDateStr = uc.EndDate.CustomDateStr(),
                     }
                 ).ToList();
 
@@ -54,12 +58,40 @@ namespace OpencvMe.Service.Service
             var response = _mapper.Map<List<CompanyResponseDTO>>(schools);
             return response;
         }
-
         public int CreateCompany (CompanyCreateDTO companyRequest)
         {
             var company = _mapper.Map<Company>(companyRequest);
             _companyRepository.Create(company);
             return company.CompanyId;
+        }
+
+        public bool AddUserCompanyList(List<UserCompanyCreateDTO> request,int userId)
+        {
+            var userCompanies= _mapper.Map<List<UserCompany>>(request);
+            userCompanies.ForEach(item => item.UserId = userId);
+            var response = _userCompanyRepository.CreateRange(userCompanies);
+            return response;
+        }
+
+        public int AddUserCompany(UserCompanyCreateDTO request,int userId)
+        {
+            var userCompany = _mapper.Map<UserCompany>(request);
+            userCompany.UserId = userId;
+            var response = _userCompanyRepository.Create(userCompany);
+            return response.UserCompanyId;
+        }
+
+        public bool DeleteUserCompany(int userCompanyId)
+        {
+            return _userCompanyRepository.Delete(userCompanyId);
+        }
+
+        public bool UpdateUserCompany(UserCompanyUpdateDTO request, int userId)
+        {
+            var userCompany = _mapper.Map<UserCompany>(request);
+            userCompany.UserId = userId;
+            _userCompanyRepository.Update(userCompany);
+            return true;
         }
     }
 }

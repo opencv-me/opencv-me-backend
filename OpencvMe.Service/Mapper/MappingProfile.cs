@@ -32,6 +32,7 @@ namespace OpencvMe.Service.Mapper
 
             CreateMap<SchoolCreateDTO,School>();
             CreateMap<UserSchoolCreateDTO, UserSchool>();
+            CreateMap<UserSchoolUpdateDTO, UserSchool>();
             #endregion
 
             #region Company Mapping
@@ -41,6 +42,7 @@ namespace OpencvMe.Service.Mapper
 
             CreateMap<CompanyCreateDTO, Company>();
             CreateMap<UserCompanyCreateDTO, UserCompany>();
+            CreateMap<UserCompanyUpdateDTO, UserCompany>();
             // CreateMap<UserCompany, UserCompanyResponseDTO>();
             #endregion
 

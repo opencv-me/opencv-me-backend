@@ -28,10 +28,12 @@ namespace OpencvMe.WebApi.Controller
             return response.Success();
         }
         [HttpPost, Route("")]
-        public ApiResponse<int> CreateCompany(CompanyCreateDTO companyRequest)
+        public ApiResponse<CompanyResponseDTO> CreateCompany(CompanyCreateDTO companyRequest)
         {
-            var response = new ApiResponse<int>();
-            response.Data = _companyService.CreateCompany(companyRequest);
+            var response = new ApiResponse<CompanyResponseDTO>();
+            response.Data = new CompanyResponseDTO();
+            response.Data.CompanyId = _companyService.CreateCompany(companyRequest);
+            response.Data.CompanyName = companyRequest.Name;
             return response.Success();
         }
 

@@ -13,7 +13,7 @@ namespace OpencvMe.Service.Interface
         UserResponseDTO GetUserInformation(int id);
         CvResponseDTO GetUserCv(string url);
         UserResponseDTO LoginUser(TokenRequestDTO request);
-        int CreateCv(CvCreateDTO cvReques);
+        int CreateCv(CvCreateDTO cvReques,int userId);
         bool UpdateCv(CvUpdateDTO cvReques);
 
         bool CheckCvUrl(string url);

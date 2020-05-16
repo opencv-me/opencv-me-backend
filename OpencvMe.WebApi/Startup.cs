@@ -39,7 +39,11 @@ namespace OpencvMe.WebApi
             services.AddControllers();
 
             //Efcore Sql 
-            services.AddDbContext<EfContext>(options => options.UseSqlServer(_configuration.GetConnectionString("OpenCvConnectionString")));
+            services.AddDbContext<EfContext>(options =>
+                // ikinci parametre DbContextimiz Model katmanında olduğu için Web api katmanındanda Migration verebilmemiz için referans
+                // dotnet ef migrations add {{migrationName}} => startup projesinin içindeyken sonrada => dotnet ef database update
+                options.UseSqlServer(_configuration.GetConnectionString("OpenCvConnectionString"), b => b.MigrationsAssembly("OpencvMe.WebApi"))
+            );
 
             // Automapper Inject
             services.AddAutoMapper(typeof(MappingProfile));
@@ -129,7 +133,6 @@ namespace OpencvMe.WebApi
             app.UseSwaggerUI(x =>
             {
                 x.SwaggerEndpoint("/swagger/v1/swagger.json", "OpenCV API  Version 1");
-
             });
 
             app.UseRouting();

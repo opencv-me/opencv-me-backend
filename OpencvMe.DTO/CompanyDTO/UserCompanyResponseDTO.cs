@@ -9,11 +9,13 @@ namespace OpencvMe.DTO.CompanyDTO
         public int UserCompanyId { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public string Position { get; set; }
 
         public bool IsWorking { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-
+        public string StartDateStr { get; set; }
+        public string EndDateStr { get; set; }
         public string Description { get; set; }
     }
 }

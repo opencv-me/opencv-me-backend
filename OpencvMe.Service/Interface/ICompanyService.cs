@@ -10,5 +10,10 @@ namespace OpencvMe.Service.Interface
       List<UserCompanyResponseDTO> GetUserCompanies(int userId);
       List<CompanyResponseDTO> SearchCompany(string searchText);
       int CreateCompany(CompanyCreateDTO company);
+      bool AddUserCompanyList(List<UserCompanyCreateDTO> request, int userId);
+      int AddUserCompany(UserCompanyCreateDTO request, int userId);
+      bool UpdateUserCompany(UserCompanyUpdateDTO request, int userId);
+      bool DeleteUserCompany(int userCompanyId);
+
     }
 }
