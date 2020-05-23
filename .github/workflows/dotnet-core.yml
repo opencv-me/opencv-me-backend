@@ -20,15 +20,9 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish -o ../publish
+      run: dotnet publish -o ./publish
 
     - name: Run list
       run: ls
-      
-    - name:  Run publish path list
-      run: |
-        ls
-        echo _________
-        echo _________
-        cd publish
+
 
