@@ -22,7 +22,13 @@ jobs:
     - name: Publish
       run: dotnet publish -o ./publish
 
-    - name: Run list
-      run: ls
+    - name: ssh Upload
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        command: scp -r publish root@${{ secrets.HOST }}:/var/www/api
+        host: ${{ secrets.HOST }}
+        username: root
+        passphrase: ${{ secrets.SSH_MAC_PASSPHRASE }}
+        privateKey: ${{ secrets.SSH_MAC_KEY}}
 
 
