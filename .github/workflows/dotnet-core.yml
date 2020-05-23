@@ -24,3 +24,11 @@ jobs:
 
     - name: Run list
       run: ls
+      
+    - name:  Run publish path list
+      run: |
+        ls
+        echo _________
+        echo _________
+        cd publish
+
