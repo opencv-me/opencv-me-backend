@@ -26,8 +26,8 @@ jobs:
       uses: wlixcc/SFTP-Deploy-Action@v1.0
       with:
         username: 'root'
-        server: ${{ secrets.HOST }}
-        private_key: ${{ secrets.SSH_MAC_KEY }} 
+        server: '${{ secrets.HOST }}'
+        private_key: '${{ secrets.SSH_MAC_KEY }}'
         local_path: './publish/*'
         remote_path: '/root/opencv-backend/' #make sure dir exist
         args: '-o ConnectTimeout=5'
