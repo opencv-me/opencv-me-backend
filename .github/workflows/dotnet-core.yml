@@ -21,15 +21,16 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Publish
       run: dotnet publish -o ./publish
-      
+     
+          
     - name: deploy file
       uses: wlixcc/SFTP-Deploy-Action@v1.0
       with:
         username: 'root'
         server: '${{ secrets.HOST }}'
-        private_key: '${{ secrets.SSH_MAC_KEY }}' #ssh'ı pem formatında istiyor
+        private_key: ${{ secrets.SSH_MAC_KEY }} #ssh'ı pem formatında istiyor
         local_path: './publish/*'
-        remote_path: '/root/opencv-backend/' #make sure dir exist
+        remote_path: '/root/opencv-backend' #make sure dir exist
         args: '-o ConnectTimeout=5'
       
        # - name: Deploy to Staging server
