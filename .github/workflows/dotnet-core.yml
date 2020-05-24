@@ -27,7 +27,7 @@ jobs:
       with:
         username: 'root'
         server: '${{ secrets.HOST }}'
-        private_key: '${{ secrets.SSH_MAC_KEY }}'
+        private_key: '${{ secrets.SSH_MAC_KEY }}' #ssh'ı pem formatında istiyor
         local_path: './publish/*'
         remote_path: '/root/opencv-backend/' #make sure dir exist
         args: '-o ConnectTimeout=5'
