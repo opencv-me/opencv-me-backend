@@ -9,6 +9,7 @@ using System.Linq;
 using AutoMapper;
 using OpencvMe.Model.Model;
 using OpencvMe.Common.Helper;
+using OpencvMe.Common.Model;
 
 namespace OpencvMe.Service.Service
 {
@@ -27,14 +28,16 @@ namespace OpencvMe.Service.Service
             _mapper = mapper;
         }
 
-        public List<UserCompanyResponseDTO> GetUserCompanies(int userId)
+        public ServiceResponse<List<UserCompanyDTO>> GetUserCompanies(int userId)
         {
 
-            var response = (
+            var serviceResponse = new ServiceResponse<List<UserCompanyDTO>>();
+
+            serviceResponse.Data = (
                     from uc in _userCompanyRepository.Find(x => x.UserId == userId)
                     join c in _companyRepository.GetAll() on uc.CompanyId equals c.CompanyId
                     where c.CompanyId == uc.CompanyId
-                    select new UserCompanyResponseDTO()
+                    select new UserCompanyDTO()
                     {
                         UserCompanyId = uc.UserCompanyId,
                         CompanyName = c.Name,
@@ -45,53 +48,84 @@ namespace OpencvMe.Service.Service
                         StartDate = uc.StartDate,
                         EndDate = uc.EndDate,
                         StartDateStr = uc.StartDate.CustomDateStr(),
-                        EndDateStr = uc.EndDate.CustomDateStr(),
+                        EndDateStr = uc.IsWorking ? " Devam ediyor " : uc.EndDate.CustomDateStr(),
+
                     }
                 ).ToList();
 
 
-            return response;
+           return serviceResponse.Success();
+
         }
-        public List<CompanyResponseDTO> SearchCompany(string searchText)
+        public ServiceResponse<List<CompanyDTO>> SearchCompany(string searchText)
         {
+            var serviceResponse = new ServiceResponse<List<CompanyDTO>>();
             var schools = _companyRepository.Find(x => x.Name.Contains(searchText)).ToList();
-            var response = _mapper.Map<List<CompanyResponseDTO>>(schools);
-            return response;
+            serviceResponse.Data = _mapper.Map<List<CompanyDTO>>(schools);
+            return serviceResponse.Success();
+
         }
-        public int CreateCompany (CompanyCreateDTO companyRequest)
+        public ServiceResponse<int> CreateCompany (string companyName)
         {
-            var company = _mapper.Map<Company>(companyRequest);
+            var serviceResponse = new ServiceResponse<int>();
+
+            var company = new Company() { Name = companyName };
             _companyRepository.Create(company);
-            return company.CompanyId;
+            serviceResponse.Data = company.CompanyId;
+            return serviceResponse.Success();
         }
 
-        public bool AddUserCompanyList(List<UserCompanyCreateDTO> request,int userId)
+        public ServiceResponse<bool> AddUserCompanyList(List<UserCompanyDTO> request,int userId)
         {
-            var userCompanies= _mapper.Map<List<UserCompany>>(request);
+            var serviceResponse = new ServiceResponse<bool>();
+
+            request.ForEach(item =>
+            {
+                if (item.CompanyId < 1)
+                    item.CompanyId = CreateCompany(item.CompanyName).Data;
+            });
+
+            var userCompanies = _mapper.Map<List<UserCompany>>(request);
             userCompanies.ForEach(item => item.UserId = userId);
-            var response = _userCompanyRepository.CreateRange(userCompanies);
-            return response;
+            serviceResponse.Data = _userCompanyRepository.CreateRange(userCompanies);
+
+            return serviceResponse.Success();
         }
 
-        public int AddUserCompany(UserCompanyCreateDTO request,int userId)
+        public ServiceResponse<int> AddUserCompany(UserCompanyDTO request,int userId)
         {
+            var serviceResponse = new ServiceResponse<int>();
+
+            if (request.CompanyId < 1) // eğer yeni bir okul ekliyorsa kaydet
+                request.CompanyId = CreateCompany(request.CompanyName).Data;
+
+
             var userCompany = _mapper.Map<UserCompany>(request);
             userCompany.UserId = userId;
-            var response = _userCompanyRepository.Create(userCompany);
-            return response.UserCompanyId;
+            _userCompanyRepository.Create(userCompany);
+            serviceResponse.Data = userCompany.UserCompanyId;
+            return serviceResponse.Success();
         }
 
-        public bool DeleteUserCompany(int userCompanyId)
+        public ServiceResponse<bool> DeleteUserCompany(int userCompanyId)
         {
-            return _userCompanyRepository.Delete(userCompanyId);
+            var serviceResponse = new ServiceResponse<bool>();
+            serviceResponse.Data = _userCompanyRepository.Delete(userCompanyId);
+            return serviceResponse.Success();
         }
 
-        public bool UpdateUserCompany(UserCompanyUpdateDTO request, int userId)
+        public ServiceResponse<bool> UpdateUserCompany(UserCompanyDTO request, int userId)
         {
+            var serviceResponse = new ServiceResponse<bool>();
+
+            if (request.CompanyId < 1) // eğer yeni bir okul ekliyorsa kaydet
+                request.CompanyId = CreateCompany(request.CompanyName).Data;
+
             var userCompany = _mapper.Map<UserCompany>(request);
             userCompany.UserId = userId;
             _userCompanyRepository.Update(userCompany);
-            return true;
+            serviceResponse.Data = true;
+            return serviceResponse.Success();
         }
     }
 }

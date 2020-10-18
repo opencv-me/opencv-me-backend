@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OpencvMe.Common.Helper;
+using OpencvMe.Common.Model;
 using OpencvMe.DTO.SchoolDTO;
 using OpencvMe.Model.Model;
 using OpencvMe.Repository.Interface;
@@ -29,14 +30,14 @@ namespace OpencvMe.Service.Service
         }
 
 
-        public List<UserSchoolResponseDTO> GetUserSchools(int userId)
+        public ServiceResponse<List<UserSchoolDTO>> GetUserSchools(int userId)
         {
-
-            var response = (
-                from us in _userSchoolRepository.Find(x=>x.UserId == userId)
+            var serviceResponse = new ServiceResponse<List<UserSchoolDTO>>();
+            serviceResponse.Data = (
+                from us in _userSchoolRepository.Find(x=> x.UserId == userId)
                 join s in _schoolRepository.GetAll() on us.SchoolId equals s.SchoolId
                 where s.SchoolId == us.SchoolId
-                select new UserSchoolResponseDTO()
+                select new UserSchoolDTO()
                 {
                     UserSchoolId = us.UserSchoolId,
                     SchoolName = s.Name,
@@ -46,55 +47,85 @@ namespace OpencvMe.Service.Service
                     IsContinue = us.IsContinue,
                     StartDate = us.StartDate,
                     EndDate = us.EndDate,
+                    LicenseDegree = us.LicenseDegree,
                     StartDateStr = us.StartDate.CustomDateStr(),
-                    EndDateStr = us.EndDate?.CustomDateStr(),
+                    EndDateStr = us.IsContinue ? " Devam ediyor " : us.EndDate?.CustomDateStr(),
                    
                 }
             ).ToList();
-            return response;
+            return serviceResponse.Success();
         }
 
-        public List<SchoolResponseDTO> SearchSchool(string searchText)
+        public ServiceResponse<List<SchoolDTO>> SearchSchool(string searchText)
         {
+            var serviceResponse = new ServiceResponse<List<SchoolDTO>>();
             var schools = _schoolRepository.Find(x => x.Name.Contains(searchText)).ToList();
-            var response = _mapper.Map<List<SchoolResponseDTO>>(schools);
-            return response;
+            serviceResponse.Data = _mapper.Map<List<SchoolDTO>>(schools);
+            return serviceResponse.Success();
         }
 
-        public int CreateSchool(SchoolCreateDTO schoolRequest)
+        public ServiceResponse<int> CreateSchool(string schoolName)
         {
-            var school = _mapper.Map<School>(schoolRequest);
+            var serviceResponse = new ServiceResponse<int>();
+
+            var school = new School() { Name = schoolName };
             _schoolRepository.Create(school);
-            return school.SchoolId;
+            serviceResponse.Data = school.SchoolId;
+            return serviceResponse.Success();
         }
 
-        public bool AddUserSchoolList(List<UserSchoolCreateDTO> request,int userId)
+        public ServiceResponse<bool> AddUserSchoolList(List<UserSchoolDTO> request,int userId)
         {
+            var serviceResponse = new ServiceResponse<bool>();
+
+
+            request.ForEach(item =>
+            {
+                if(item.SchoolId < 1)
+                    item.SchoolId = CreateSchool(item.SchoolName).Data;
+            });
+
+
             var userSchools = _mapper.Map<List<UserSchool>>(request);
             userSchools.ForEach(item => item.UserId = userId);
-            var response = _userSchoolRepository.CreateRange(userSchools);
-            return response;
+            serviceResponse.Data = _userSchoolRepository.CreateRange(userSchools);
+
+            return serviceResponse.Success();
         }
 
-        public int AddUserSchool(UserSchoolCreateDTO request,int userId)
+        public ServiceResponse<int> AddUserSchool(UserSchoolDTO request,int userId)
         {
+            var serviceResponse = new ServiceResponse<int>();
+
+            if (request.SchoolId < 1) // eğer yeni bir okul ekliyorsa kaydet
+              request.SchoolId = CreateSchool(request.SchoolName).Data;
+           
             var userSchool = _mapper.Map<UserSchool>(request);
             userSchool.UserId = userId;
-            var response = _userSchoolRepository.Create(userSchool);
-            return response.UserSchoolId;
+            _userSchoolRepository.Create(userSchool);
+            serviceResponse.Data = userSchool.UserSchoolId;
+            return serviceResponse.Success();
         }
 
-        public bool DeleteUserSchool(int userSchoolId)
+        public ServiceResponse<bool> DeleteUserSchool(int userSchoolId)
         {
-           return _userSchoolRepository.Delete(userSchoolId);
+            var serviceResponse = new ServiceResponse<bool>();
+            serviceResponse.Data = _userSchoolRepository.Delete(userSchoolId);
+            return serviceResponse.Success();
         }
 
-        public bool UpdateUserSchool(UserSchoolUpdateDTO request, int userId)
+        public ServiceResponse<bool> UpdateUserSchool(UserSchoolDTO request, int userId)
         {
+            var serviceResponse = new ServiceResponse<bool>();
+
+            if (request.SchoolId < 1) // eğer yeni bir okul ekliyorsa kaydet
+                request.SchoolId = CreateSchool(request.SchoolName).Data;
+
             var userSchool = _mapper.Map<UserSchool>(request);
             userSchool.UserId = userId;
             _userSchoolRepository.Update(userSchool);
-            return true;
+            serviceResponse.Data = true;
+            return serviceResponse.Success();
         }
     }
 }

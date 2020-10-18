@@ -21,7 +21,7 @@ namespace OpencvMe.Common.Model
 
         public ServiceResponse<T> Error(string message = "İşlem Hatalı")
         {
-            this.IsSuccess = true;
+            this.IsSuccess = false;
             this.Message = message;
 
             return this;

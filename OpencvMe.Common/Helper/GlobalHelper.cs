@@ -30,10 +30,18 @@ namespace OpencvMe.Common.Helper
             return Convert.ToInt32(System.Text.Encoding.UTF8.GetString(decodedBytes));
             // string decodedTxt2 = System.Text.Encoding.Unicode.GetString(decodedBytes);
         }
+
+        // ay ve yıl
         public static string CustomDateStr (this DateTime date)
         {
             return  date.Year + " " +date.ToString("MMMM", CultureInfo.CreateSpecificCulture("tr"));
-        } 
+        }
+
+        // ay gün yıl
+        public static string CustomFullDateStr(this DateTime date)
+        {
+            return date.Day + " " + date.ToString("MMMM", CultureInfo.CreateSpecificCulture("tr")) + " " +  date.Year;
+        }
     }
       
     public class GlobalHelper

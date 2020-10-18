@@ -15,27 +15,23 @@ namespace OpencvMe.WebApi.Controller
     public class CompanyV1Controller : ControllerBase
     {
         ICompanyService _companyService;
-        public CompanyV1Controller(ICompanyService companyService)
-        {
-            _companyService = companyService;
-        }
-
-        [HttpGet, Route("search")]
-        public ApiResponse<List<CompanyResponseDTO>> SearchCompany([FromQuery]string searchText)
-        {
-            var response = new ApiResponse<List<CompanyResponseDTO>>();
-            response.Data = _companyService.SearchCompany(searchText);
-            return response.Success();
-        }
-        [HttpPost, Route("")]
-        public ApiResponse<CompanyResponseDTO> CreateCompany(CompanyCreateDTO companyRequest)
-        {
-            var response = new ApiResponse<CompanyResponseDTO>();
-            response.Data = new CompanyResponseDTO();
-            response.Data.CompanyId = _companyService.CreateCompany(companyRequest);
-            response.Data.CompanyName = companyRequest.Name;
-            return response.Success();
-        }
+         public CompanyV1Controller(ICompanyService companyService)
+         {
+             _companyService = companyService;
+         }
+        
+         [HttpGet, Route("search")]
+         public ServiceResponse<List<CompanyDTO>> SearchCompany([FromQuery]string searchText)
+         {
+             var response = new ServiceResponse<List<CompanyDTO>>();
+             var companyServiceResponse = _companyService.SearchCompany(searchText);
+        
+             response.Data = companyServiceResponse.Data;
+             response.Message = companyServiceResponse.Message;
+             response.IsSuccess = companyServiceResponse.IsSuccess;
+             return response;
+        
+         }
 
     }
 }

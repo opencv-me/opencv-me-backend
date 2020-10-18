@@ -21,20 +21,10 @@ namespace OpencvMe.WebApi.Controller
 
         }
         [HttpGet,Route("search")]
-        public ApiResponse<List<SchoolResponseDTO>> SearchSchool([FromQuery]string searchText)
+        public ServiceResponse<List<SchoolDTO>> SearchSchool([FromQuery]string searchText)
         {
-            var response = new ApiResponse<List<SchoolResponseDTO>>();
-            response.Data = _schoolService.SearchSchool(searchText);
-            return response.Success();
-        }
-        [HttpPost, Route("")]
-        public ApiResponse<SchoolResponseDTO> CreateSchool(SchoolCreateDTO schoolRequest)
-        {
-            var response = new ApiResponse<SchoolResponseDTO>();
-            response.Data = new SchoolResponseDTO();
-            response.Data.SchoolId = _schoolService.CreateSchool(schoolRequest);
-            response.Data.SchoolName = schoolRequest.Name;
-            return response.Success();
+            var response = new ApiResponse<List<SchoolDTO>>();
+            return _schoolService.SearchSchool(searchText);
         }
 
     }

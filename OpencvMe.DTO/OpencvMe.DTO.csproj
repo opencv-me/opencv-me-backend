@@ -4,4 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpencvMe.Common\OpencvMe.Common.csproj" />
+  </ItemGroup>
 </Project>

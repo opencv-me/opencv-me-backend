@@ -1,4 +1,5 @@
-﻿using OpencvMe.DTO.AuthenticationDTO;
+﻿using OpencvMe.Common.Model;
+using OpencvMe.DTO.AuthenticationDTO;
 using OpencvMe.DTO.CvDTO;
 using OpencvMe.DTO.UserDTO;
 using System;
@@ -9,13 +10,17 @@ namespace OpencvMe.Service.Interface
 {
     public interface IUserService
     {
-        int RegisterUser(UserCreateDTO userRequest);
-        UserResponseDTO GetUserInformation(int id);
-        CvResponseDTO GetUserCv(string url);
-        UserResponseDTO LoginUser(TokenRequestDTO request);
-        int CreateCv(CvCreateDTO cvReques,int userId);
-        bool UpdateCv(CvUpdateDTO cvReques);
+        ServiceResponse<int> RegisterUser(UserDTO userRequest);
+        ServiceResponse<UserDTO> GetUserInformation(int id);
+        ServiceResponse<CvDTO> GetUserCv(string url);
+        ServiceResponse<CvDTO> GetUserCv(int userId);
+        ServiceResponse<UserDTO> LoginUser(TokenRequestDTO request);
+        ServiceResponse<int> CreateCv(CvDTO cvReques,int userId);
+        ServiceResponse<bool> UpdateCv(CvDTO cvReques,int userId);
+        ServiceResponse<bool> UpdateSocials(SocialsDTO socialsUpdateDTO, int userId);
+        ServiceResponse<bool> UpdatePassword(string password, int userId);
+        ServiceResponse<bool> CheckCvUrl(string url,int userId);
+        ServiceResponse<bool> UpdateSetting(SettingUpdateDTO setting, int userId);
 
-        bool CheckCvUrl(string url);
     }
 }

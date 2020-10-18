@@ -31,39 +31,40 @@ namespace OpencvMe.WebApi.Controller
         {
             var response = new TokenResponseDTO();
             var user = _userService.LoginUser(request);
-            if(user != null )
+
+            if (!user.IsSuccess)
             {
-                var claims = new[]
-                {
-                    new Claim("id",user.UserId.ToString()),
-                    new Claim("date",new DateTime().ToString())
-                };
-
-                var secretBytes = Encoding.UTF8.GetBytes(AuthenticationConstant.SecretKey);
-                var key = new SymmetricSecurityKey(secretBytes);
-                var algorithm = SecurityAlgorithms.HmacSha256;
-                var signingCredentials = new SigningCredentials(key, algorithm);
-                var expireDate = DateTime.Now.AddDays(30);
-                var token = new JwtSecurityToken(
-                    AuthenticationConstant.Issuer,
-                    AuthenticationConstant.Audience,
-                    claims,
-                    notBefore:DateTime.Now,
-                    expires: expireDate,
-                    signingCredentials
-                );
-
-                response.IsLogin = true;
-                response.ExpireDate = expireDate;
-                response.Message = "İşlem Başarılı";
-                response.AccessToken = new JwtSecurityTokenHandler().WriteToken(token);
-                return response;
-            }
-            else {
                 response.IsLogin = false;
-                response.Message = "Kullanı Adı veya Şifre Hatalı";
+                response.Message = user.Message;
                 return response;
             }
+
+            var claims = new[]
+            {
+                new Claim("id",user.Data.UserId.ToString()),
+                new Claim("date",new DateTime().ToString())
+            };
+
+            var secretBytes = Encoding.UTF8.GetBytes(AuthenticationConstant.SecretKey);
+            var key = new SymmetricSecurityKey(secretBytes);
+            var algorithm = SecurityAlgorithms.HmacSha256;
+            var signingCredentials = new SigningCredentials(key, algorithm);
+            var expireDate = DateTime.Now.AddDays(30);
+            var token = new JwtSecurityToken(
+                AuthenticationConstant.Issuer,
+                AuthenticationConstant.Audience,
+                claims,
+                notBefore:DateTime.Now,
+                expires: expireDate,
+                signingCredentials
+            );
+
+            response.IsLogin = true;
+            response.ExpireDate = expireDate;
+            response.Message = "İşlem Başarılı";
+            response.AccessToken = new JwtSecurityTokenHandler().WriteToken(token);
+            return response;
+       
         }
     }
 }

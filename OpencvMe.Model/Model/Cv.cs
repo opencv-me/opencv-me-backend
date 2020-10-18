@@ -17,9 +17,11 @@ namespace OpencvMe.Model.Model
         public string AboutDescription { get; set; }
 
 
+        public string Website { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Location { get; set; }
+        public string City { get; set; }
         public DateTime BirthDay { get; set; }
 
         // socials
@@ -28,6 +30,8 @@ namespace OpencvMe.Model.Model
         public string Twitter { get; set; }
         public string Instagram { get; set; }
         public string Medium { get; set; }
+        public string Youtube { get; set; }
+
 
         public bool IsPublic { get; set; }
 

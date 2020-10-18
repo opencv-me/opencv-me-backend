@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpencvMe.Common.Constant;
 using OpencvMe.Common.Model;
@@ -8,147 +9,166 @@ using OpencvMe.DTO.SchoolDTO;
 using OpencvMe.DTO.UserDTO;
 using OpencvMe.Service.Interface;
 using OpencvMe.WebApi.Base;
+using OpencvMe.WebApi.Filter;
 
 namespace OpencvMe.WebApi.Controller
 {
     [Route("v1/user")]
-    //[ApiController]
+    [ValidationFilter]
     public class UserV1Controller : OpenCvBaseController
     {
         IUserService _userService;
         ISchoolService _schoolService;
         ICompanyService _companyService;
+        IMapper _mapper;
         public UserV1Controller(
             IUserService userService,
             ISchoolService schoolService,
-            ICompanyService companyService)
+            ICompanyService companyService,
+            IMapper mapper)
         {
             _userService = userService;
             _companyService = companyService;
             _schoolService = schoolService;
-
-
-        }
-
-        [Authorize, HttpGet, Route("")]
-        public ApiResponse<UserResponseDTO> GetUserInformation()
-        {
-            var claims = GetUserClaims();
-            var response = new ApiResponse<UserResponseDTO>();
-            response.Data = _userService.GetUserInformation(claims.UserId);
-            return response.Success();
-        }
-
-        [HttpGet, Route("cv/{url}")]
-        public ApiResponse<CvResponseDTO> GetUserCv(string url)
-        {
-            var response = new ApiResponse<CvResponseDTO>();
-            response.Data = _userService.GetUserCv(url);
-            if(response.Data != null)
-            {
-                response.Data.Schools = _schoolService.GetUserSchools(response.Data.UserId);
-                response.Data.Companies = _companyService.GetUserCompanies(response.Data.UserId);
-            }
-            return response.Success();
+            _mapper = mapper;
         }
 
         [HttpPost, Route("register")]
-        public ApiResponse<int> RegisterUser([FromBody]UserCreateDTO user)
+        public ServiceResponse<int> RegisterUser([FromBody]UserDTO user)
         {
-
-            var response = new ApiResponse<int>();
-            response.Data = _userService.RegisterUser(user);
-
-            if (response.Data == ErrorConstant.HasMail) {
-                return response.Error("Bu mail adresi kullanılıyor");
-            }
-            else {
-                return response.Success();
-            }
-
+            return _userService.RegisterUser(user);
         }
 
+        // Kullanıcı kendi bilgilerini çeker
+        [Authorize, HttpGet, Route("")]
+        public ServiceResponse<UserDTO> GetUserInformation()
+        {
+            var claims = GetUserClaims();
+            return _userService.GetUserInformation(claims.UserId);
+        }
+
+        // birinin cv'sini  incelediğimizde çağırılan servis
+        [HttpGet, Route("cv/{url}")]
+        public ServiceResponse<CvDTO> GetUserCv(string url)
+        {
+            var response = _userService.GetUserCv(url);
+            if(response.Data != null)
+            {
+                response.Data.UserSchools = _schoolService.GetUserSchools(response.Data.UserId).Data;
+                response.Data.UserCompanies = _companyService.GetUserCompanies(response.Data.UserId).Data;
+            }
+            return response;
+        }
+
+
+
         [Authorize, HttpPost, Route("cv")]
-        public ApiResponse<int> CreateCv([FromBody]CvCreateDTO cvCreateDTO)
+        public ServiceResponse<int> CreateCv([FromBody]CvDTO cvCreateDTO)
+        {
+            var claims = GetUserClaims();
+            cvCreateDTO.UserId = claims.UserId;
+
+            return _userService.CreateCv(cvCreateDTO,claims.UserId);
+        }
+
+
+        [HttpPut, Route("cv")]
+        public ServiceResponse<bool> UpdateCv([FromBody]CvDTO cvUpdateDTO)
+        {
+            var claims = GetUserClaims();
+            var response = new ServiceResponse<bool>();
+
+            var usedCvResponse = _userService.CheckCvUrl(cvUpdateDTO.CvUrl,claims.UserId);
+
+
+            if (!usedCvResponse.Data)
+                response = _userService.UpdateCv(cvUpdateDTO, claims.UserId);
+            else { 
+                response.IsSuccess = false;
+                response.Message = usedCvResponse.Message;
+            }   
+
+
+            return response;
+            
+
+        }
+        [HttpPut, Route("cv/socials")]
+        public ServiceResponse<bool> UpdateSocials([FromBody]SocialsDTO socialsUpdateDTO)
         {
             var claims = GetUserClaims();
 
-            cvCreateDTO.UserId = claims.UserId;
-            var response = new ApiResponse<int>();
-            response.Data = _userService.CreateCv(cvCreateDTO,claims.UserId);
-            return response.Success();
-        }
+            var isValid = ModelState.IsValid;
 
-        [HttpPut, Route("cv")]
-        public ApiResponse<bool> UpdateCv(CvUpdateDTO cvUpdateDTO)
-        {
-            var response = new ApiResponse<bool>();
-            response.Data = _userService.UpdateCv(cvUpdateDTO);
-            return response.Success();
+            return _userService.UpdateSocials(socialsUpdateDTO, claims.UserId);
         }
 
         [HttpGet, Route("cv/{url}/check")]
-        public ApiResponse<bool> CheckCv([FromRoute] string url)
+        public ServiceResponse<bool> CheckCv([FromRoute] string url)
         {
-            var response = new ApiResponse<bool>();
-            response.Data = _userService.CheckCvUrl(url);
-            return response.Success();
+            var claims = GetUserClaims();
+            return _userService.CheckCvUrl(url,claims.UserId);
         }
 
         #region School
 
         [HttpPost, Route("school")]
-        public ApiResponse<int> AddUserSchool([FromBody] UserSchoolCreateDTO request)
+        public ServiceResponse<int> AddUserSchool([FromBody] UserSchoolDTO request)
         {
             var claims = GetUserClaims();
-            var response = new ApiResponse<int>();
-            response.Data = _schoolService.AddUserSchool(request, claims.UserId);
-            return response.Success();
+            return _schoolService.AddUserSchool(request, claims.UserId);
         }
         [HttpDelete, Route("school")]
-        public ApiResponse<bool> DeleteUserSchool(int userSchoolId)
+        public ServiceResponse<bool> DeleteUserSchool(int userSchoolId)
         {
-            var response = new ApiResponse<bool>();
-            response.Data = _schoolService.DeleteUserSchool(userSchoolId);
-            return response.Success();
+            return _schoolService.DeleteUserSchool(userSchoolId);
         }
         [HttpPut, Route("school")]
-        public ApiResponse<bool> UpdateUserSchool([FromBody]UserSchoolUpdateDTO request)
+        public ServiceResponse<bool> UpdateUserSchool([FromBody]UserSchoolDTO request)
         {
+
             var claims = GetUserClaims();
-            var response = new ApiResponse<bool>();
-            response.Data = _schoolService.UpdateUserSchool(request, claims.UserId);
-            return response.Success();
+            return _schoolService.UpdateUserSchool(request,claims.UserId);
         }
         #endregion
 
         #region Company
 
         [HttpPost, Route("company")]
-        public ApiResponse<int> AddUserCompany([FromBody]UserCompanyCreateDTO request)
+        public ServiceResponse<int> AddUserCompany([FromBody]UserCompanyDTO request)
         {
             var claims = GetUserClaims();
-            var response = new ApiResponse<int>();
-            response.Data = _companyService.AddUserCompany(request, claims.UserId);
-            return response.Success();
+            return _companyService.AddUserCompany(request, claims.UserId);
         }
         [HttpPut, Route("company")]
-        public ApiResponse<bool> UpdateUserCompany([FromBody]UserCompanyUpdateDTO request)
+        public ServiceResponse<bool> UpdateUserCompany([FromBody]UserCompanyDTO request)
         {
             var claims = GetUserClaims();
-            var response = new ApiResponse<bool>();
-            response.Data = _companyService.UpdateUserCompany(request, claims.UserId);
-            return response.Success();
+            return _companyService.UpdateUserCompany(request, claims.UserId);
         }
 
         [HttpDelete, Route("company")]
-        public ApiResponse<bool> DeleteUserCompany(int userCompanyId)
+        public ServiceResponse<bool> DeleteUserCompany(int userCompanyId)
         {
-            var response = new ApiResponse<bool>();
-            response.Data = _companyService.DeleteUserCompany(userCompanyId);
-            return response.Success();
+            return _companyService.DeleteUserCompany(userCompanyId);
         }
 
+        [HttpPut, Route("password")]
+
+        public ServiceResponse<bool> UpdatePassword([FromBody] UpdatePasswordDTO request)
+        {
+            var claims = GetUserClaims();
+            return  _userService.UpdatePassword(request.Password,claims.UserId);
+        }
+
+        [HttpPut, Route("setting")]
+
+        public ServiceResponse<bool> UpdateSetting([FromBody] SettingUpdateDTO request)
+        {
+            var claims = GetUserClaims();
+            return _userService.UpdateSetting(request, claims.UserId);
+
+        }
         #endregion
 
     }

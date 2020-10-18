@@ -40,6 +40,6 @@ namespace OpencvMe.Model.Model
         /// <summary>
         /// lisans derecesi
         /// </summary>
-        public int licenseDegree { get; set; }
+        public int LicenseDegree { get; set; }
     }
 }
